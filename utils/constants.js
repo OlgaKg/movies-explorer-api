@@ -1,0 +1,7 @@
+const CREATED_STATUS = 201;
+const INTERNAL_SERVER_ERROR = 500;
+
+module.exports = {
+  CREATED_STATUS,
+  INTERNAL_SERVER_ERROR,
+};
