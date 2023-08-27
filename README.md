@@ -1,3 +1,2 @@
-# movies-explorer-api
-# api.dpmovie.nomoredomainsicu.ru
-Backend
+# Адрес сервера
+https://api.dpmovie.nomoredomainsicu.ru

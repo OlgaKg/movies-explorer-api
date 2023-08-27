@@ -5,7 +5,7 @@ const NotFoundError = require('../utils/errors/NotFoundError');
 const BadRequestError = require('../utils/errors/BadRequestError');
 const ConflictError = require('../utils/errors/ConflictError');
 const {
-  CREATED_STATUS,
+  CREATED_STATUS, ERROR_MESSAGES,
 } = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -40,7 +40,7 @@ module.exports.createUser = (req, res, next) => {
           ),
         );
       } else if (err.code === 11000) {
-        next(new ConflictError('Пользователь с данным email уже существует'));
+        next(new ConflictError(ERROR_MESSAGES.CONFLICT));
       } else {
         next(err);
       }
@@ -53,14 +53,16 @@ module.exports.updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        next(new NotFoundError('Пользователь с таким id не найден'));
+        next(new NotFoundError(ERROR_MESSAGES.NOT_FOUND_USER));
       } else {
         res.send(user);
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные'));
+        next(new BadRequestError(ERROR_MESSAGES.BAD_REQUEST));
+      } else if (err.code === 11000) {
+        next(new ConflictError(ERROR_MESSAGES.CONFLICT));
       } else {
         next(err);
       }
@@ -91,14 +93,14 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError('Пользователь не найден'));
+        next(new NotFoundError(ERROR_MESSAGES.NOT_FOUND_USER));
       } else {
         res.send(user);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные'));
+        next(new BadRequestError(ERROR_MESSAGES.BAD_REQUEST));
       } else {
         next(err);
       }

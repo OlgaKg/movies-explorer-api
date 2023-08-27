@@ -3,6 +3,7 @@ const userRouter = require('./users');
 const movieRouter = require('./movies');
 const authMiddleware = require('../middlewares/auth');
 const NotFoundError = require('../utils/errors/NotFoundError');
+const { ERROR_MESSAGES } = require('../utils/constants');
 const {
   login, createUser, logout,
 } = require('../controllers/userController');
@@ -19,7 +20,7 @@ routes.use('/movies', movieRouter);
 routes.get('/signout', logout);
 
 routes.use('*', (req, res, next) => {
-  next(new NotFoundError(`Ресурс по данному адресу ${req.path} не найден`));
+  next(new NotFoundError(`${ERROR_MESSAGES.NOT_FOUND_RESOURCE}: ${req.originalUrl}`));
 });
 
 module.exports = routes;
