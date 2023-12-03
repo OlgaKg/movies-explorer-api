@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use(cors({
-  origin: ['http://localhost:3002', 'https://api.nomoreparties.co/beatfilm-movies', 'https://dpmovie.nomoredomainsicu.ru'],
+  origin: ['http://localhost:3000', 'https://api.nomoreparties.co/beatfilm-movies', 'https://dpmovie.nomoredomainsicu.ru'],
   credentials: true,
   maxAge: 30,
 }));
